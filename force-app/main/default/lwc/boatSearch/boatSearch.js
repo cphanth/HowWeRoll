@@ -1,7 +1,10 @@
 import { LightningElement } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
+import getBoats from '@salesforce/apex/BoatDataService.getBoats';
 
 export default class BoatSearch extends LightningElement {
     isLoading = false;
+    boatTypeId;
 
     // Handles loading event
     handleLoading(){
@@ -15,7 +18,18 @@ export default class BoatSearch extends LightningElement {
 
     // Handles search boat event
     // This custom event comes from the form
-    searchBoats(event){}
+    searchBoats(event){
+        this.boatTypeId = event.detail.boatTypeId;
+        getBoats(this.boatTypeId);
+    }
 
-    createNewBoat(){}
+    createNewBoat(){
+        this[NavigationMixin.Navigate]({
+            type: standard__ObjectPage,
+            attributes: {
+                objectApiName: 'Boat__c',
+                actionName: 'new'
+            },
+        });
+    }
 }
