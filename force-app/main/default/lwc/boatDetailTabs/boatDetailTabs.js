@@ -66,7 +66,7 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
   
   // Calls subscribeMC()
   connectedCallback() {
-      this.subscription();
+      this.subscribeMC();
   }
 
   disconnectedCallback() {
