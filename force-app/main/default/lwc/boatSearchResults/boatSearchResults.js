@@ -1,6 +1,6 @@
 import { LightningElement, wire, api, track } from 'lwc';
 import getBoats from '@salesforce/apex/BoatDataService.getBoats';
-import { updateRecord } from 'lightning/uiRecordApi'
+import updateBoatList from '@salesforce/apex/BoatDataService.updateBoatList';
 import { showToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import { publish, MessageContext } from 'lightning/messageService';
