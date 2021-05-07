@@ -11,7 +11,7 @@ export default class BoatsNearMe extends LightningElement {
   @api boatTypeId;
   mapMarkers = [];
   isLoading = true;
-  isRendered;
+  isRendered = false;
   latitude;
   longitude;
   
@@ -44,19 +44,19 @@ export default class BoatsNearMe extends LightningElement {
   // Gets the location from the Browser
   // position => {latitude and longitude}
   getLocationFromBrowser() {
-      if (navigator.geolocation) {
+      
           navigator.geolocation.getCurrentPosition((position) => {
             //   Get latitude and longitude from Geolocation API
             this.latitude = position.coords.latitude;
             this.longitude = position.coords.longitude;
           });
-      }
+      
   }
   
   // Creates the map markers
   createMapMarkers(boatData) {
       //markers are generated from boatData and includes name and location
-     const newMarkers = boatData.map(boat => {
+     this.mapMarkers = boatData.map(boat => {
          return{
              location: {
                  Latitude: boat.Geolocation__Latitude__s,
@@ -66,7 +66,7 @@ export default class BoatsNearMe extends LightningElement {
          };
      });
      //unshift will push browser location (lat and long to top of array) of newMarkers
-     newMarkers.unshift({
+     this.mapMarkers.unshift({
          location: {
              Latitude: this.latitude,
              Longitude: this.longitude
@@ -74,8 +74,6 @@ export default class BoatsNearMe extends LightningElement {
          title: LABEL_YOU_ARE_HERE,
          icon: ICON_STANDARD_USER
      });
-     // use mapMarkers to point to newMarkers array
-     mapMarkers = newMarkers;
      this.isLoading = false;
    }
 }
