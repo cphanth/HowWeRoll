@@ -45,9 +45,9 @@ export default class BoatDetailTabs extends NavigationMixin(LightningElement) {
       return getFieldValue(this.wiredRecord.data, BOAT_NAME_FIELD);
   }
 
-  @wire(MessageContext) messageContext;
+  @wire(MessageContext)messageContext;
 
-  @wire(getRecord, {recordId: '$boatId', fields: BOAT_FIELDS}) wiredRecord;
+  @wire(getRecord, {recordId: '$boatId', fields: BOAT_FIELDS})wiredRecord;
   
   // Private
   subscription = null;
