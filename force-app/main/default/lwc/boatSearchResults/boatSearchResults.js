@@ -10,6 +10,7 @@ const SUCCESS_TITLE   = 'Success';
 const MESSAGE_SHIP_IT = 'Ship it!';
 const SUCCESS_VARIANT = 'success';
 const ERROR_TITLE     = 'Error';
+const ERROR_MESSAGE   = 'Error'
 const ERROR_VARIANT   = 'error';
 
 export default class BoatSearchResults extends LightningElement {
@@ -24,6 +25,8 @@ export default class BoatSearchResults extends LightningElement {
       { label: 'Price', fieldName: 'Price__c', type: 'currency', editable: 'true'},
       { label: 'Description', fieldName: 'Description__c', type: 'text', editable: 'true'}
   ];
+
+  draftValues = [];
   
   // wired message context
   @wire(MessageContext) messageContext;
@@ -79,13 +82,44 @@ export default class BoatSearchResults extends LightningElement {
   // clear lightning-datatable draft values
   handleSave(event) {
     // notify loading
+    this.isLoading = true;
+    this.notifyLoading(this.isLoading);
+    //updateFields stores field values and recordId as array of objects
     const updatedFields = event.detail.draftValues;
     // Update the records via Apex
     updateBoatList({data: updatedFields})
-    .then(() => {})
-    .catch(error => {})
-    .finally(() => {});
+    .then(() => {
+        this.dispatchEvent(
+            new showToastEvent({
+                title: SUCCESS_TITLE,
+                message: MESSAGE_SHIP_IT,
+                variant: SUCCESS_VARIANT
+            })
+        );
+        //clear draft values in datatable
+        this.draftValues = [];
+        //display fresh data in datatable
+        this.refresh();
+    })
+    .catch(error => {
+        this.error = error;
+        this.dispatchEvent( new showToastEvent({
+            title: ERROR_TITLE,
+            message: ERROR_MESSAGE,
+            variant: ERROR_VARIANT
+        }));
+        this.notifyLoading(false);
+    })
+    .finally(() => {
+        this.draftValues = [];
+    });
   }
   // Check the current value of isLoading before dispatching the doneloading or loading custom event
-  notifyLoading(isLoading) { }
+  notifyLoading(isLoading) {
+      if (isLoading) {
+          this.dispatchEvent(new CustomEvent('loading'));
+      } else {
+          this.dispatchEvent(CustomEvent('doneloading'));
+      }
+  }
 }
