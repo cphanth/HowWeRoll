@@ -3,12 +3,14 @@ import { subscribe, unsubscribe, MessageContext, APPLICATION_SCOPE } from 'light
 import { getRecord } from 'lightning/uiRecordApi';
 // import BOATMC from the message channel
 import BOATMC from '@salesforce/messageChannel/BoatMessageChannel__c';
+
 // Declare the const LONGITUDE_FIELD for the boat's Longitude__s
 const LONGITUDE_FIELD = 'Boat__c.Geolocation__Longitude__s';
 // Declare the const LATITUDE_FIELD for the boat's Latitude
 const LATITUDE_FIELD = 'Boat__c.Geolocation__Latitude__s';
 // Declare the const BOAT_FIELDS as a list of [LONGITUDE_FIELD, LATITUDE_FIELD];
 const BOAT_FIELDS = [LONGITUDE_FIELD,LATITUDE_FIELD];
+
 export default class BoatMap extends LightningElement {
   // private
   subscription = null;

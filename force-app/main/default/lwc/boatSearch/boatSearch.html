@@ -3,8 +3,10 @@
         <!-- Top -->
         <lightning-layout-item size="12">
             <lightning-card title="Find a Boat">
-                    <lightning-button variant="neutral" slot="actions" label="New Boat" onclick={createNewBoat}></lightning-button>
-                <p class="slds-var-p-horizontal_small">
+                    <div slot="actions">
+                        <lightning-button class="slds-m-around_medium" variant="neutral" slot="actions" label="New Boat" onclick={createNewBoat}></lightning-button>
+                    </div>
+                <p class="slds-var-p-horizontal_small slds-align_absolute-center">
                     <c-boat-search-form onsearch={searchBoats}></c-boat-search-form>
                 </p>
             </lightning-card>

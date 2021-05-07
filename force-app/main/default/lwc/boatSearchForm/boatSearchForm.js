@@ -14,12 +14,14 @@ export default class BoatSearchForm extends LightningElement {
   @wire(getBoatTypes)
     boatTypes({ error, data }) {
     if (data) {
+      //map acts like for each loop except is able to return new array
       this.searchOptions = data.map(type => {
         return {
           label: type.Name,
           value: type.Id
         }
       });
+      //unshift is used to make 'All Types' as first value in form at beginning of array
       this.searchOptions.unshift({ label: 'All Types', value: '' });
     } else if (error) {
       this.searchOptions = undefined;
