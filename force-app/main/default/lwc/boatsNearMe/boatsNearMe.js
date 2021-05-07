@@ -18,7 +18,7 @@ export default class BoatsNearMe extends LightningElement {
   // Add the wired method from the Apex Class
   // Name it getBoatsByLocation, and use latitude, longitude and boatTypeId
   // Handle the result and calls createMapMarkers
-  @wire(getBoatsByLocation, {latitude: '$latitude', longitude: '$longitude', boatTypeId: '$boatTypeId'});
+  @wire(getBoatsByLocation, {latitude: '$latitude', longitude: '$longitude', boatTypeId: '$boatTypeId'})
   wiredBoatsJSON({error, data}) {
       if(data) {
           this.createMapMarkers(data);
@@ -34,7 +34,12 @@ export default class BoatsNearMe extends LightningElement {
   
   // Controls the isRendered property
   // Calls getLocationFromBrowser()
-  renderedCallback() { }
+  renderedCallback() {
+      if(this.isRendered === false) {
+          this.getLocationFromBrowser();
+      }
+      this.isRendered = true;
+  }
   
   // Gets the location from the Browser
   // position => {latitude and longitude}
@@ -50,7 +55,27 @@ export default class BoatsNearMe extends LightningElement {
   
   // Creates the map markers
   createMapMarkers(boatData) {
-     // const newMarkers = boatData.map(boat => {...});
-     // newMarkers.unshift({...});
+      //markers are generated from boatData and includes name and location
+     const newMarkers = boatData.map(boat => {
+         return{
+             location: {
+                 Latitude: boat.Geolocation__Latitude__s,
+                 Longitude: boat.Geolocation__Longitude__s
+             },
+             title: boat.Name
+         };
+     });
+     //unshift will push browser location (lat and long to top of array) of newMarkers
+     newMarkers.unshift({
+         location: {
+             Latitude: this.latitude,
+             Longitude: this.longitude
+         },
+         title: LABEL_YOU_ARE_HERE,
+         icon: ICON_STANDARD_USER
+     });
+     // use mapMarkers to point to newMarkers array
+     mapMarkers = newMarkers;
+     this.isLoading = false;
    }
 }
